@@ -1,0 +1,27 @@
+CREATE DATABASE IF NOT EXISTS api_bancaria;
+
+USE api_bancaria;
+
+CREATE TABLE CuentaBancaria (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  numeroCuenta VARCHAR(20) UNIQUE NOT NULL,
+  saldo DECIMAL(10, 2) NOT NULL,
+  titular VARCHAR(100) NOT NULL,
+  tarjetaDebito VARCHAR(20) UNIQUE NOT NULL,
+  claveTarjeta VARCHAR(255) NOT NULL,
+  correoElectronico VARCHAR(255)
+);
+
+CREATE TABLE Transaccion (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  tipo ENUM('Deposito', 'Retiro', 'Cambio de Clave') NOT NULL,
+  monto DECIMAL(10, 2) NOT NULL,
+  fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  idCuenta INT,
+  FOREIGN KEY (idCuenta) REFERENCES CuentaBancaria(id)
+);
+
+INSERT INTO CuentaBancaria (numeroCuenta, saldo, titular, tarjetaDebito, claveTarjeta, correoElectronico)
+VALUES
+('1001', 5000.00, 'John Doe', '1234-5678-9012-3456', '123456', 'john.doe@example.com'),
+('1002', 8000.00, 'Jane Smith', '9876-5432-1098-7654', '654321', 'jane.smith@example.com');
